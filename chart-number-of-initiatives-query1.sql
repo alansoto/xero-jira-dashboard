@@ -16,4 +16,4 @@ WHERE
 GROUP BY
     `PR`.`project_key`
 LIMIT
-    3000;
+    4000;
