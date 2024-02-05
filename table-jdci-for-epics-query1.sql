@@ -104,8 +104,6 @@ LEFT JOIN `jira_issue` AS `Parent` ON `Issue`.`parent_issue_id` = `Parent`.`issu
 
 WHERE 
     `Issue`.`issue_type` = 'Epic'
-     AND 
-    `PR`.`project_key` IN ('AUP', 'PANZ', 'UKPAY','INPAY')
 	-- Condition to filter the query using the calendar control
 	AND
 	`Issue`.`created_at` BETWEEN {CAL_CREATED_AT.START} AND {CAL_CREATED_AT.END}
