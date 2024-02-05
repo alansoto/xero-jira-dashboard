@@ -82,6 +82,5 @@ WHERE
 
 
 ORDER BY 
-    `Issue`.`issue_type` ASC,
     `Issue`.`issue_key` ASC
-LIMIT 3000;
+LIMIT 4000;
