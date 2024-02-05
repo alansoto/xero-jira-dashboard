@@ -70,8 +70,6 @@ LEFT JOIN
 
 WHERE 
     `Issue`.`issue_type` = 'Initiative'
-    AND 
-    `PR`.`project_key` IN ('AUP', 'PANZ', 'UKPAY','INPAY')
 	-- Condition to filter the query using the calendar control
 	AND
 	`Issue`.`created_at` BETWEEN {CAL_CREATED_AT.START} AND {CAL_CREATED_AT.END}
