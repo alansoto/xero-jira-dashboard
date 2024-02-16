@@ -4,20 +4,20 @@ SELECT
 	
 	-- Calculation of Jira Data Completeness Index
     AVG (
-        CASE WHEN `DOKR`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `CI`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-		CASE WHEN `PFTE`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-		CASE WHEN `DFTE`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-		CASE WHEN `EFTE`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-		CASE WHEN `L1M`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-		CASE WHEN `CIMP`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `R&D`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `RAG`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `TOD`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `SD`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `TE`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `TEAM`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `Parent`.`issue_id` IS NULL THEN 0 ELSE 0.0718 END
+        CASE WHEN `DOKR`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	  	CASE WHEN `CI`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+		CASE WHEN `PFTE`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+		CASE WHEN `DFTE`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+		CASE WHEN `EFTE`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+		CASE WHEN `L1M`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+		CASE WHEN `CIMP`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	  	CASE WHEN `R&D`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	  	CASE WHEN `RAG`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	  	CASE WHEN `TOD`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	  	CASE WHEN `SD`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+        CASE WHEN `DD`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	  	
+	  	CASE WHEN `Parent`.`issue_id` IS NULL THEN 0 ELSE 0.0772 END
     )  AS `JDCI`
 	
 FROM 
@@ -64,18 +64,15 @@ FROM
     LEFT JOIN 
         `jira_issue_field` AS `TOD` 
         ON `TOD`.`issue_id` = `Issue`.`issue_id` AND `TOD`.`name` = 'Taxonomy of Demand'
-    -- Left join to bring SD
+    -- Left join to bring Start Date
     LEFT JOIN 
-        `jira_issue_field` AS `SD` 
+        `jira_issue_field` AS `Start date` 
         ON `SD`.`issue_id` = `Issue`.`issue_id` AND `SD`.`name` = 'Start date'
-    -- Left join to bring TED
+    -- Left join to bring Due Date
     LEFT JOIN 
-        `jira_issue_field` AS `TE` 
-        ON `TE`.`issue_id` = `Issue`.`issue_id` AND `TE`.`name` = 'Target End'
-    -- Left join to bring TN
-    LEFT JOIN 
-        `jira_issue_field` AS `TEAM` 
-        ON `TEAM`.`issue_id` = `Issue`.`issue_id` AND `TEAM`.`name` = 'Assigned Team'
+        `jira_issue_field` AS `Due date` 
+        ON `DD`.`issue_id` = `Issue`.`issue_id` AND `DD`.`name` = 'Due date'
+    
     -- Left join to bring Parent
     LEFT JOIN `jira_issue` AS `Parent` ON `Issue`.`parent_issue_id` = `Parent`.`issue_id` 
 
