@@ -3,8 +3,10 @@ SELECT
 	
 	
 	SUM(
-		CAST(`EFTE`.`value` as FLOAT) + CAST(`DFTE`.`value` AS FLOAT)+ CAST(`PFTE`.`value` AS FLOAT)
-) AS `Total FTE`
+		COALESCE(CAST(`EFTE`.`value` as FLOAT),0) + 
+	    COALESCE(CAST(`DFTE`.`value` AS FLOAT),0) + 
+	    COALESCE(CAST(`PFTE`.`value` AS FLOAT),0) 
+    ) AS `Total FTE`
 	
 FROM 
     `jira_issue` AS `Issue`

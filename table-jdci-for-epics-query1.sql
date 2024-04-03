@@ -29,7 +29,9 @@ SELECT
 	`PFTE`.`value` AS `Product FTE`,
 	`DFTE`.`value` AS `Design FTE`,
     `EFTE`.`value` AS `Engineering FTE`,
-	CAST(`EFTE`.`value` as FLOAT) + CAST(`DFTE`.`value` AS FLOAT)+ CAST(`PFTE`.`value` AS FLOAT) AS `Total FTE`,
+	COALESCE(CAST(`EFTE`.`value` as FLOAT),0) + 
+	COALESCE(CAST(`DFTE`.`value` AS FLOAT),0) + 
+	COALESCE(CAST(`PFTE`.`value` AS FLOAT),0) AS `Total FTE`,
 	`L1M`.`value` AS `L1 Metric`,
 	`CIMP`.`value` AS `Channel Impact`,
 	`R&D`.`value` AS `R&D`,
