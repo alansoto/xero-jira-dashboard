@@ -8,23 +8,21 @@ SELECT
 	
 	-- Calculation of Jira Data Completeness Index
     (
-        CASE WHEN `PFTE`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	    CASE WHEN `EFTE`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-        CASE WHEN `DFTE`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-		CASE WHEN `DOKR`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `CI`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-		CASE WHEN `L1M`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-		CASE WHEN `CIMP`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `R&D`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `RAG`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-		CASE WHEN `TOD`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	   CASE WHEN `SDTE`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	   CASE WHEN `DDTE`.`value` IS NULL THEN 0 ELSE 0.0714 END +
-	  	CASE WHEN `REG`.`value` IS NULL THEN 0 ELSE 0.0714 END +
+        CASE WHEN `PFTE`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	    CASE WHEN `EFTE`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+        CASE WHEN `DFTE`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	  	CASE WHEN `CI`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+		CASE WHEN `L1M`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+		CASE WHEN `CIMP`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	  	CASE WHEN `R&D`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	  	CASE WHEN `RAG`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+		CASE WHEN `TOD`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	   CASE WHEN `SDTE`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	   CASE WHEN `DDTE`.`value` IS NULL THEN 0 ELSE 0.0769 END +
+	  	CASE WHEN `REG`.`value` IS NULL THEN 0 ELSE 0.0769 END +
 	  	CASE WHEN `Issue`.`parent_issue_id` IS NULL THEN 0 ELSE 0.0772 END
     )  AS `JDCI`,
 	
-	`DOKR`.`value` AS `Division OKR`,
 	`CI`.`value` AS `Customer Impact`,
 	`PFTE`.`value` AS `Product FTE`,
 	`DFTE`.`value` AS `Design FTE`,
@@ -59,10 +57,6 @@ LEFT JOIN
 LEFT JOIN 
     `jira_issue_field` AS `DFTE` 
     ON `DFTE`.`issue_id` = `Issue`.`issue_id` AND `DFTE`.`name` = 'Design FTE'
--- Left join to bring Division OKR
-LEFT JOIN 
-    `jira_issue_field` AS `DOKR` 
-    ON `DOKR`.`issue_id` = `Issue`.`issue_id` AND `DOKR`.`name` = 'Division OKR'
 -- Left join to bring Customer Impact
 LEFT JOIN 
     `jira_issue_field` AS `CI` 
