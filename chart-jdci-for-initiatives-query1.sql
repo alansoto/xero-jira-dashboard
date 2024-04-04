@@ -27,7 +27,7 @@ FROM
 	-- Left join to bring Division OKR
     LEFT JOIN 
    	`jira_issue_field` AS `DOKR` 
-    	ON `DOKR`.`issue_id` = `Issue`.`issue_id` AND `DOKR`.`name` IN ('SB & Growth 			Division OKR / Deliverable', 'Ecosystem Division OKR / Deliverable')
+    	ON `DOKR`.`issue_id` = `Issue`.`issue_id` AND `DOKR`.`name` IN ('SB & Growth Division OKR / Deliverable', 'Ecosystem Division OKR / Deliverable')
     -- Left join to bring Customer Impact
     LEFT JOIN 
         `jira_issue_field` AS `CI` 
