@@ -8,26 +8,26 @@ SELECT
 	
 	-- Calculation of Jira Data Completeness Index
     (
-        CASE WHEN `CKR`.`value` IS NULL THEN 0 ELSE 0.125 END +
         CASE WHEN `CO`.`value` IS NULL THEN 0 ELSE 0.125 END +
 		CASE WHEN `DOKR`.`value` IS NULL THEN 0 ELSE 0.125 END +
 	  	CASE WHEN `CI`.`value` IS NULL THEN 0 ELSE 0.125 END +
 		CASE WHEN `L1M`.`value` IS NULL THEN 0 ELSE 0.125 END +
 		CASE WHEN `CIMP`.`value` IS NULL THEN 0 ELSE 0.125 END +
 	  	CASE WHEN `R&D`.`value` IS NULL THEN 0 ELSE 0.125 END +
-	  	CASE WHEN `RAG`.`value` IS NULL THEN 0 ELSE 0.125 END
+	  	CASE WHEN `RAG`.`value` IS NULL THEN 0 ELSE 0.125 END +
+	  	CASE WHEN `REG`.`value` IS NULL THEN 0 ELSE 0.125 END
     )  AS `JDCI`,
 	
 	
 	
-    `CO`.`value` AS `Company Objective`,
-    `CKR`.`value` AS `Company Key Result`,
+    `CO`.`value` AS `Company Objective (FY25)`,
 	`DOKR`.`value` AS `Division OKR`,
 	`CI`.`value` AS `Customer Impact`,
 	`L1M`.`value` AS `L1 Metric`,
 	`CIMP`.`value` AS `Channel Impact`,
 	`R&D`.`value` AS `R&D`,
-	`RAG`.`value` AS `RAG Status`
+	`RAG`.`value` AS `RAG Status`,
+	`REG`.`value` AS `Regions Impacted`
     
     
 	
@@ -38,15 +38,11 @@ INNER JOIN
 -- Left join to bring Company Objective
 LEFT JOIN 
     `jira_issue_field` AS `CO` 
-    ON `CO`.`issue_id` = `Issue`.`issue_id` AND `CO`.`name` = 'Company Objective'
--- Left join to bring Company Key Result
-LEFT JOIN 
-    `jira_issue_field` AS `CKR` 
-    ON `CKR`.`issue_id` = `Issue`.`issue_id` AND `CKR`.`name` = 'Company Key Result'
+    ON `CO`.`issue_id` = `Issue`.`issue_id` AND `CO`.`name` = 'Company OKR (FY25)'
 -- Left join to bring Division OKR
 LEFT JOIN 
     `jira_issue_field` AS `DOKR` 
-    ON `DOKR`.`issue_id` = `Issue`.`issue_id` AND `DOKR`.`name` = 'Division OKR'
+    ON `DOKR`.`issue_id` = `Issue`.`issue_id` AND `DOKR`.`name` IN ('SB & Growth Division OKR / Deliverable', 'Ecosystem Division OKR / Deliverable')
 -- Left join to bring Customer Impact
 LEFT JOIN 
     `jira_issue_field` AS `CI` 
@@ -67,6 +63,10 @@ LEFT JOIN
 LEFT JOIN 
     `jira_issue_field` AS `RAG` 
     ON `RAG`.`issue_id` = `Issue`.`issue_id` AND `RAG`.`name` = 'RAG Status'
+-- Left join to bring REG	
+LEFT JOIN 
+    `jira_issue_field` AS `REG` 
+    ON `REG`.`issue_id` = `Issue`.`issue_id` AND `REG`.`name` = 'Regions Impacted'
 
 WHERE 
     `Issue`.`issue_type` = 'Initiative'
