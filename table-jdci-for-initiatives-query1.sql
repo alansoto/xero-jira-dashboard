@@ -4,7 +4,7 @@ SELECT
     `Issue`.`summary` AS `Summary`,
 	`Issue`.`created_at` AS `Created`,
 	`Issue`.`status` AS `Status`,
-	'https://xero.atlassian.net/browse/' ||  `Issue`.`issue_key` AS `URL`,
+	`Issue`.`url` AS `URL`,
 	
 	-- Calculation of Jira Data Completeness Index
     (
@@ -27,7 +27,12 @@ SELECT
 	`CIMP`.`value` AS `Channel Impact`,
 	`R&D`.`value` AS `R&D`,
 	`RAG`.`value` AS `RAG Status`,
-	`REG`.`value` AS `Regions Impacted`
+	`REG`.`value` AS `Regions Impacted`,
+	
+	-- FTE Aggreagation
+	SUM (COALESCE((CAST(`PFTE`.`value` AS FLOAT)) ,0))+
+	SUM (COALESCE((CAST(`EFTE`.`value` AS FLOAT)) ,0))+
+	SUM (COALESCE((CAST(`DFTE`.`value` AS FLOAT)) ,0)) AS `Total FTE`
     
     
 	
@@ -68,6 +73,19 @@ LEFT JOIN
     `jira_issue_field` AS `REG` 
     ON `REG`.`issue_id` = `Issue`.`issue_id` AND `REG`.`name` = 'Regions Impacted'
 
+-- Series of JOINS to bring FTE values
+INNER JOIN `jira_issue` AS `Epic` 
+	ON `Issue`.`issue_id` = `Epic`.`parent_issue_id`
+LEFT JOIN 
+	`jira_issue_field` AS `PFTE` 
+    ON `PFTE`.`issue_id` = `Epic`.`issue_id` AND `PFTE`.`name` = 'Product FTE'
+LEFT JOIN 
+   `jira_issue_field` AS `EFTE` 
+   ON `EFTE`.`issue_id` = `Epic`.`issue_id` AND `EFTE`.`name` = 'Engineering FTE'
+LEFT JOIN 
+   `jira_issue_field` AS `DFTE` 
+   ON `DFTE`.`issue_id` = `Epic`.`issue_id` AND `DFTE`.`name` = 'Design FTE'
+
 WHERE 
     `Issue`.`issue_type` = 'Initiative'
 	-- Condition to filter the query using the calendar control
@@ -80,6 +98,37 @@ WHERE
 	AND
 	{DROPDOWN_PROJECT.IN('`PR`.`project_key`')}
 
+GROUP BY
+	`PR`.`project_key`,
+    `Issue`.`issue_key`,
+    `Issue`.`summary`,
+	`Issue`.`created_at`,
+	`Issue`.`status` ,
+	`Issue`.`url` ,
+	
+	-- Calculation of Jira Data Completeness Index
+    (
+        CASE WHEN `CO`.`value` IS NULL THEN 0 ELSE 0.125 END +
+		CASE WHEN `DOKR`.`value` IS NULL THEN 0 ELSE 0.125 END +
+	  	CASE WHEN `CI`.`value` IS NULL THEN 0 ELSE 0.125 END +
+		CASE WHEN `L1M`.`value` IS NULL THEN 0 ELSE 0.125 END +
+		CASE WHEN `CIMP`.`value` IS NULL THEN 0 ELSE 0.125 END +
+	  	CASE WHEN `R&D`.`value` IS NULL THEN 0 ELSE 0.125 END +
+	  	CASE WHEN `RAG`.`value` IS NULL THEN 0 ELSE 0.125 END +
+	  	CASE WHEN `REG`.`value` IS NULL THEN 0 ELSE 0.125 END
+    )  ,
+	
+	
+	
+    `CO`.`value` ,
+	`DOKR`.`value` ,
+	`CI`.`value` ,
+	`L1M`.`value` ,
+	`CIMP`.`value` ,
+	`R&D`.`value` ,
+	`RAG`.`value` ,
+	`REG`.`value` 
+	
 
 ORDER BY 
     `Issue`.`issue_key` ASC
