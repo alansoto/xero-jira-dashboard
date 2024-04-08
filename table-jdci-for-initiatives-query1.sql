@@ -71,7 +71,7 @@ LEFT JOIN
 -- Left join to bring REG	
 LEFT JOIN 
     `jira_issue_field` AS `REG` 
-    ON `REG`.`issue_id` = `Issue`.`issue_id` AND `REG`.`name` = 'Regions Impacted'
+    ON `REG`.`issue_id` = `Issue`.`issue_id` AND `REG`.`name` = 'Regions Impacted' AND `REG`.`field_key` = 'customfield_15209'
 
 -- Series of JOINS to bring FTE values
 INNER JOIN `jira_issue` AS `Epic` 
@@ -97,6 +97,7 @@ WHERE
 	-- Condition to filter the query using the dropdown project control
 	AND
 	{DROPDOWN_PROJECT.IN('`PR`.`project_key`')}
+	
 
 GROUP BY
 	`PR`.`project_key`,
